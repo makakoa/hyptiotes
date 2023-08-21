@@ -1,0 +1,10 @@
+{
+  "name": "hyptiotes",
+  "version": "1.0.0",
+  "scripts": {
+    "example": "npx webpack-cli -c ./example/webpack.config.js"
+  },
+  "main": "index.js",
+  "author": "makakoa",
+  "license": "MIT"
+}
