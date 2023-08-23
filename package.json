@@ -1,10 +1,18 @@
 {
   "name": "hyptiotes",
-  "version": "1.0.0",
+  "description": "exploratory web building framework aiming to spring load the web trinity (HTML + CSS + JS) by pulling everything into JS",
+  "version": "0.0.1",
   "scripts": {
-    "example": "npx webpack-cli -c ./example/webpack.config.js"
+    "dev": "NODE_ENV=development webpack serve -c example/webpack.config.js",
+    "publish": "webpack -c example/webpack.config.js && gh-pages --dist 'example/public'"
   },
   "main": "index.js",
   "author": "makakoa",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "gh-pages": "^6.0.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
 }
