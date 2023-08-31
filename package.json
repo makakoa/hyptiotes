@@ -4,12 +4,14 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "NODE_ENV=development webpack serve -c example/webpack.config.js",
+    "lint": "eslint .",
     "publish": "webpack -c example/webpack.config.js && gh-pages --dist 'example/public'"
   },
   "main": "index.js",
   "author": "makakoa",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^8.48.0",
     "gh-pages": "^6.0.0",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",

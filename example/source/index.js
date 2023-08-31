@@ -1,7 +1,8 @@
 const hyptiotes = require("../../index");
+const HookExample = require("./HookExample");
+const ObservableExample = require("./ObservableExample");
 
-const root = document.getElementById("root");
-
+// Add some basic page styles
 hyptiotes.style({
 	body: {
 		fontFamily: "system-ui",
@@ -13,55 +14,5 @@ hyptiotes.style({
 	},
 });
 
-const TodoStore = {
-	data: ["Rework dynamic component update interface", "Figure out parent update memo"],
-	subscriptions: [],
-	get: () => TodoStore.data,
-	add: (todo) => (TodoStore.data.push(todo), TodoStore.emit()),
-	emit: () => TodoStore.subscriptions.forEach((cb) => cb()),
-	subscribe: (fn) => TodoStore.subscriptions.push(fn),
-};
-
-hyptiotes.mount(root, [
-	":div",
-	{ id: "main-content" },
-	[":h1", "Hyptiotes To-Do"],
-	TodoList,
-	AddTodo,
-]);
-
-function TodoList({ update }) {
-  // will subscribe every call
-	TodoStore.subscribe(update);
-	return [
-		":ul",
-		...TodoStore.get().map((todo) => {
-			return [":li", todo];
-		}),
-	];
-}
-
-function AddTodo({ update }) {
-	let inputValue = "";
-	return [
-		":div",
-		[
-			":input",
-			{
-				onkeyup: (e) => {
-					inputValue = e.target.value;
-				},
-			},
-		],
-		[
-			":button",
-			{
-				onclick: () => {
-					TodoStore.add(inputValue);
-					update();
-				},
-			},
-			"Add",
-		],
-	];
-}
+ObservableExample();
+// HookExample();
