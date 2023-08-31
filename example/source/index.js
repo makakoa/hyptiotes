@@ -23,9 +23,9 @@ const TodoStore = {
 };
 
 hyptiotes.mount(root, [
-	"div",
+	":div",
 	{ id: "main-content" },
-	["h1", "Hyptiotes To-Do"],
+	[":h1", "Hyptiotes To-Do"],
 	TodoList,
 	AddTodo,
 ]);
@@ -34,9 +34,9 @@ function TodoList({ update }) {
   // will subscribe every call
 	TodoStore.subscribe(update);
 	return [
-		"ul",
+		":ul",
 		...TodoStore.get().map((todo) => {
-			return ["li", todo];
+			return [":li", todo];
 		}),
 	];
 }
@@ -44,9 +44,9 @@ function TodoList({ update }) {
 function AddTodo({ update }) {
 	let inputValue = "";
 	return [
-		"div",
+		":div",
 		[
-			"input",
+			":input",
 			{
 				onkeyup: (e) => {
 					inputValue = e.target.value;
@@ -54,7 +54,7 @@ function AddTodo({ update }) {
 			},
 		],
 		[
-			"button",
+			":button",
 			{
 				onclick: () => {
 					TodoStore.add(inputValue);
