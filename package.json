@@ -3,9 +3,14 @@
   "description": "exploratory web building framework aiming to spring load the web trinity (HTML + CSS + JS) by pulling everything into JS",
   "version": "0.0.1",
   "scripts": {
-    "dev": "NODE_ENV=development webpack serve -c example/webpack.config.js",
+    "dev": "NODE_ENV=development npm-run-all --parallel dev:webpack dev:ssr",
+    "dev:ssr": "nodemon example/source/markup.js",
+    "dev:webpack": "webpack serve -c example/webpack.config.js --allowed-hosts all",
     "lint": "eslint .",
-    "publish": "webpack -c example/webpack.config.js && gh-pages --dist 'example/public'"
+    "pages": "gh-pages --dist 'example/public'",
+    "ssr": "node example/source/markup.js",
+    "webpack": "webpack -c example/webpack.config.js",
+    "publish": "npm-run-all ssr webpack pages"
   },
   "main": "index.js",
   "author": "makakoa",
@@ -13,6 +18,7 @@
   "devDependencies": {
     "eslint": "^8.48.0",
     "gh-pages": "^6.0.0",
+    "npm-run-all": "^4.1.5",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"

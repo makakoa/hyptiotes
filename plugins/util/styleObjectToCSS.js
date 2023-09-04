@@ -1,18 +1,12 @@
-module.exports = function style(data) {
-	const element = document.createElement("style");
-	element.innerHTML = cssify(data);
-	document.head.appendChild(element);
-};
-
-function cssify(obj, prefix = "") {
+module.exports = function styelObjectToCSS(obj, prefix = "") {
 	var nested = "";
-	var current = mapObj(obj, function (key, val) {
+	var current = Object.entries(obj).map(([key, val]) => {
 		// Nested styles
 		if (val !== null && typeof val === "object") {
 			if (key.startsWith("@media")) {
-				nested += [key, "{", cssify(val, ""), "}"].join("");
+				nested += [key, "{", styelObjectToCSS(val, ""), "}"].join("");
 			} else {
-				nested += cssify(
+				nested += styelObjectToCSS(
 					val,
 					key.startsWith("&") ? prefix + key.slice(1) : prefix + " " + key
 				);
@@ -28,8 +22,4 @@ function cssify(obj, prefix = "") {
 // Replace any capital letter with "-<lowercase>"
 function hyphenate(str) {
 	return str.replace(/[A-Z]/, (match) => "-" + match.toLowerCase());
-}
-
-function mapObj(object, cb) {
-	return Object.entries(object).map(([key, value]) => cb(key, value));
 }

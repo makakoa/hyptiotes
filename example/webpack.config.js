@@ -18,11 +18,15 @@ const extended = isDev
 
 module.exports = {
 	entry: {
-		scripts: path.join(__dirname, "source/index.js"),
+		hook: path.join(__dirname, "source/hook/index.js"),
+		observable: path.join(__dirname, "source/observable/index.js"),
 	},
 	output: {
 		path: path.join(__dirname, "public"),
 		filename: "[name].bundle.js",
 	},
+	plugins: [
+		// new GenerateMarkup()
+	],
 	...extended,
 };

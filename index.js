@@ -1,24 +1,23 @@
 const PLUGINS = require("./plugins");
-const style = require("./style");
 
 // web dom api defaults
 let initFn = (tag) => document.createElement(tag);
-let finalFn = (x) => x;
 let itemHooks = [
-	PLUGINS.ITEMS.skipEmpty,
-	PLUGINS.ITEMS.forwardNodes,
-	PLUGINS.ITEMS.textContent,
-	PLUGINS.ITEMS.nestedWeb,
-	PLUGINS.ITEMS.childLists,
+	PLUGINS.skipEmpty,
+	PLUGINS.appendNodes,
+	PLUGINS.appendTextNodes,
+	PLUGINS.appendNested,
+	PLUGINS.appendDeepChildren,
+	PLUGINS.invokeFunction,
 ];
 let attributeHooks = [
-	PLUGINS.ATTRIBUTES.inlineStyle,
-	PLUGINS.ATTRIBUTES.eventHandler,
-	PLUGINS.ATTRIBUTES.basicAttribute,
+	PLUGINS.setInlineStyle,
+	PLUGINS.setAttributeFunction,
+	PLUGINS.setAttribute,
 ];
+let finalFn = (x) => x;
 
 module.exports = hyptiotes = {
-	style,
 	castWeb,
 	setElementInitiator: (fn) => (initFn = fn),
 	setElementFinalizer: (fn) => (finalFn = fn),
@@ -43,15 +42,19 @@ function castWeb(model) {
 	} catch (e) {
 		console.error(
 			"Error encountered rendering",
-			`${JSON.stringify(e.item, (k, v) => v.toString ? v.toString().slice(0, 30) + '...' : v)} index(${e.index || "ROOT"})`,
+			`${printWithFunc(e.item)} index(${e.index || "ROOT"})`,
 			" with ",
-			e.handler || "hyptiotes",
+			printWithFunc(e.handler) || "hyptiotes",
 			" from model ",
 			JSON.stringify(e.model || model),
 			e.parent ? " inside of " + e.parent : "",
 		);
 		throw e;
 	}
+}
+
+function printWithFunc(obj) {
+	return JSON.stringify(obj, (k, v) => typeof v === "function" ? v.toString().slice(0, 30) + '...' : v);
 }
 
 // processes items through hooks

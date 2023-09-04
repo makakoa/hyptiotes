@@ -1,30 +1,26 @@
-const hyptiotes = require("../../index");
-const TodoStore = require("./TodoStore");
+const hyptiotes = require("../../../index");
+const TodoStore = require("../TodoStore");
 const LinkedObservable = require("./LinkedObservable");
-const observableDom = require("./observableDom");
+const observableToDom = require("./observableToDom");
 
-module.exports = function ObservableExample() {
-	// Configure Hyptiotes for observable interface
-	const observablePlugins = [
-		...hyptiotes.DEFAULT_ITEM_HANDLERS,
-		observableDom,
-		hyptiotes.PLUGINS.ITEMS.invokeFunction,
-	];
-	hyptiotes.setItemHandlers(observablePlugins);
-	ObservableExample.plugins = observablePlugins;
+// Configure Hyptiotes for observable interface
+const observablePlugins = [
+	observableToDom,
+	...hyptiotes.DEFAULT_ITEM_HANDLERS,
+];
+hyptiotes.setItemHandlers(observablePlugins);
 
-	// Create dom structure
-	const domTree = hyptiotes.castWeb([
-		":div",
-		{ id: "main-content" },
-		[":h1", "Hyptiotes To-Do"],
-		TodoList,
-		AddTodo,
-	]);
+// Create dom structure
+const domTree = hyptiotes.castWeb([
+	":div",
+	{ id: "main-content" },
+	[":h1", "Hyptiotes To-Do"],
+	TodoList,
+	AddTodo,
+]);
 
-	// Append to root element
-	document.getElementById("root").appendChild(domTree);
-};
+// Append to root element
+document.getElementById("root").appendChild(domTree);
 
 function TodoList() {
 	// Create observable
