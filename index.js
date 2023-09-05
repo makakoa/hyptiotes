@@ -1,7 +1,7 @@
 const PLUGINS = require("./plugins");
 
 // web dom api defaults
-let initFn = (tag) => document.createElement(tag);
+let initFn = (tag) => document.createElement(tag.slice(1));
 let itemHooks = [
 	PLUGINS.skipEmpty,
 	PLUGINS.appendNodes,
@@ -19,24 +19,27 @@ let finalFn = (x) => x;
 
 module.exports = hyptiotes = {
 	castWeb,
-	setElementInitiator: (fn) => (initFn = fn),
+	mapItem,
+	mapAttributes,
+	setElementInitializer: (fn) => (initFn = fn),
 	setElementFinalizer: (fn) => (finalFn = fn),
-	DEFAULT_ITEM_HANDLERS: [...itemHooks],
-	DEFAULT_ATTRIBUTE_HANDLERS: [...attributeHooks],
-	PLUGINS,
 	addItemHandler: plugin => itemHooks.push(plugin),
 	setItemHandlers: (plugins) => (itemHooks = plugins),
 	addAttributeHandler: plugin => attributeHooks.push(plugin),
 	setAttributeHandlers: (plugins) => (attributeHooks = plugins),
-	mapItem,
-	mapAttributes,
+	getConfiguration: () => ({elementInitializer: initFn, itemHandlers: itemHooks, attributeHandlers: attributeHooks, elementFinalizer: finalFn}),
+	DEFAULT_ELEMENT_INITIALIZER: initFn,
+	DEFAULT_ITEM_HANDLERS: [...itemHooks],
+	DEFAULT_ATTRIBUTE_HANDLERS: [...attributeHooks],
+	DEFAULT_ELEMENT_FINALIZER: finalFn,
+	PLUGINS,
 };
 
 // maps entered array
 function castWeb(model) {
 	try {
 		const [tag, ...children] = model;
-		const base = initFn(tag.slice(1));
+		const base = initFn(tag);
 		children.forEach((item, index) => hyptiotes.mapItem(item, base, index));
 		return finalFn(base);
 	} catch (e) {
@@ -70,7 +73,7 @@ function mapItem(item, parent, index) {
 		) {
 			hyptiotes.mapAttributes(item, parent);
 		} else {
-			throw new Error("Unhandled Item", item);
+			throw new Error("Unhandled Item " + JSON.stringify(item));
 		}
 	} catch (e) {
 		e.handler = e.handler || handler;

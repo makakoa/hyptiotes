@@ -1,68 +1,15 @@
-const hyptiotes = require("../../../index");
-const TodoStore = require("../TodoStore");
-const LinkedObservable = require("./LinkedObservable");
-const observableToDom = require("./observableToDom");
+const hyptiotes = require("hyptiotes");
 
-// Configure Hyptiotes for observable interface
-const observablePlugins = [
-	observableToDom,
-	...hyptiotes.DEFAULT_ITEM_HANDLERS,
-];
-hyptiotes.setItemHandlers(observablePlugins);
+const configuration = require("./configuration");
+const App = require("./app");
 
-// Create dom structure
-const domTree = hyptiotes.castWeb([
-	":div",
-	{ id: "main-content" },
-	[":h1", "Hyptiotes To-Do"],
-	TodoList,
-	AddTodo,
-]);
+hyptiotes.setElementInitializer(configuration.elementInitializer);
+hyptiotes.setItemHandlers(configuration.itemHandlers);
+hyptiotes.setAttributeHandlers(configuration.attributeHandlers);
+hyptiotes.setElementFinalizer(configuration.elementFinalizer);
+
+// Create dom tree
+const domTree = hyptiotes.castWeb(App);
 
 // Append to root element
 document.getElementById("root").appendChild(domTree);
-
-function TodoList() {
-	// Create observable
-	const Todos = new LinkedObservable(TodoStore.get());
-	// Plug into data store
-	TodoStore.subscribe((v) => Todos.set(v));
-
-	// Map observable to dom
-	return Todos.map((todoList) => {
-		return [
-			":ul",
-			...todoList.map((todo) => {
-				return [":li", todo];
-			}),
-		];
-	});
-}
-
-function AddTodo() {
-	const inputValue = new LinkedObservable("");
-	return [
-		":div",
-		inputValue.map((val) => {
-			return [
-				":input",
-				{
-					value: val,
-					onchange: (e) => {
-						inputValue.set(e.target.value);
-					},
-				},
-			];
-		}),
-		[
-			":button",
-			{
-				onclick: () => {
-					TodoStore.add(inputValue.current);
-					inputValue.set("");
-				},
-			},
-			"Add",
-		],
-	];
-}

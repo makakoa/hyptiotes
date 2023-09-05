@@ -1,5 +1,5 @@
 const TodoStore = {
-	data: ["Add some memo patterns", "Use mutation observer for cleanup hooks", "Add diffing patterns"],
+	data: ["Use mutation observer for cleanup hooks", "Decouple PLUGINS from main file", "Add diffing patterns", "Add memo patterns"],
 	subscriptions: [],
 	get: () => TodoStore.data,
 	add: (todo) => (TodoStore.data.push(todo), TodoStore.emit()),
