@@ -53,7 +53,7 @@ module.exports = function fromTemplate({ name, id, bundled, sources }) {
 					return [
 						":a",
 						{
-							href: "/" + exampleId + ".html",
+							href: "./" + exampleId + ".html",
 							style: {
 								...(id === exampleId
 									? {
