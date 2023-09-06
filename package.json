@@ -1,7 +1,7 @@
 {
   "name": "hyptiotes",
   "description": "exploratory web building framework aiming to spring load the web trinity (HTML + CSS + JS) by pulling everything into JS",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev": "NODE_ENV=development npm-run-all --parallel dev:webpack dev:ssr",
     "dev:ssr": "nodemon example/source/markup",
