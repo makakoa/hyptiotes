@@ -24,7 +24,8 @@ module.exports = {
 		const component =
 			typeof tag === "string"
 				? tag.slice(1)
-				: (props) => hyptiotes.castWeb(tag(props)); // wrap render fn in hyptiotes cast
+        // wrap render fn in hyptiotes cast to map returned tree, expose React
+				: (props) => hyptiotes.castWeb(tag(props, React));
 		return React.createElement(component, attributes, ...children);
 	},
 };

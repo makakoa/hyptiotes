@@ -10,7 +10,7 @@
     "pages": "gh-pages --dist 'example/public'",
     "ssr": "node example/source/markup",
     "webpack": "webpack -c example/webpack.config.js",
-    "publish": "npm-run-all ssr webpack pages"
+    "publish-examples": "npm-run-all ssr webpack pages"
   },
   "main": "index.js",
   "author": "makakoa",

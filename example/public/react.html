@@ -41,12 +41,13 @@ root.<span class="hljs-title function_">render</span>(reactTree);
 		<span class="hljs-keyword">const</span> component =
 			<span class="hljs-keyword">typeof</span> tag === <span class="hljs-string">&quot;string&quot;</span>
 				? tag.<span class="hljs-title function_">slice</span>(<span class="hljs-number">1</span>)
-				: <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> hyptiotes.<span class="hljs-title function_">castWeb</span>(<span class="hljs-title function_">tag</span>(props)); <span class="hljs-comment">// wrap render fn in hyptiotes cast</span>
+        <span class="hljs-comment">// wrap render fn in hyptiotes cast to map returned tree, expose React</span>
+				: <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> hyptiotes.<span class="hljs-title function_">castWeb</span>(<span class="hljs-title function_">tag</span>(props, <span class="hljs-title class_">React</span>));
 		<span class="hljs-keyword">return</span> <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createElement</span>(component, attributes, ...children);
 	},
 };
-</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >app.js</div><code ><span class="hljs-keyword">const</span> <span class="hljs-title class_">React</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;react&quot;</span>);
-<span class="hljs-keyword">const</span> { useState, useEffect } = <span class="hljs-title class_">React</span>;
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >app.js</div><code ><span class="hljs-comment">// Don&#x27;t need to require React since it&#x27;s exposed in function call</span>
+<span class="hljs-comment">// const React = require(&quot;react&quot;);</span>
 <span class="hljs-keyword">const</span> <span class="hljs-title class_">TodoStore</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../TodoStore&quot;</span>);
 
 <span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
@@ -57,7 +58,7 @@ root.<span class="hljs-title function_">render</span>(reactTree);
 	[<span class="hljs-title class_">AddTodo</span>],
 ];
 
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">TodoList</span>(<span class="hljs-params"></span>) {
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">TodoList</span>(<span class="hljs-params">_, { useEffect, useState }</span>) {
 	<span class="hljs-keyword">const</span> [list, setList] = <span class="hljs-title function_">useState</span>(<span class="hljs-title class_">TodoStore</span>.<span class="hljs-title function_">get</span>());
 	<span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">TodoStore</span>.<span class="hljs-title function_">subscribe</span>(<span class="hljs-function">(<span class="hljs-params">v</span>) =&gt;</span> <span class="hljs-title function_">setList</span>(v)));
 
@@ -69,7 +70,7 @@ root.<span class="hljs-title function_">render</span>(reactTree);
 	];
 }
 
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">AddTodo</span>(<span class="hljs-params"></span>) {
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">AddTodo</span>(<span class="hljs-params">_, { useState }</span>) {
 	<span class="hljs-keyword">const</span> [val, setVal] = <span class="hljs-title function_">useState</span>(<span class="hljs-string">&quot;&quot;</span>);
 	<span class="hljs-keyword">return</span> [
 		<span class="hljs-string">&quot;:div&quot;</span>,
@@ -130,7 +131,8 @@ root.<span class="hljs-title function_">render</span>(reactTree);
 		<span class="hljs-keyword">const</span> component =
 			<span class="hljs-keyword">typeof</span> tag === <span class="hljs-string">&quot;string&quot;</span>
 				? tag.<span class="hljs-title function_">slice</span>(<span class="hljs-number">1</span>)
-				: <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> hyptiotes.<span class="hljs-title function_">castWeb</span>(<span class="hljs-title function_">tag</span>(props)); <span class="hljs-comment">// wrap render fn in hyptiotes cast</span>
+        <span class="hljs-comment">// wrap render fn in hyptiotes cast to map returned tree, expose React</span>
+				: <span class="hljs-function">(<span class="hljs-params">props</span>) =&gt;</span> hyptiotes.<span class="hljs-title function_">castWeb</span>(<span class="hljs-title function_">tag</span>(props, <span class="hljs-title class_">React</span>));
 		<span class="hljs-keyword">return</span> <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createElement</span>(component, attributes, ...children);
 	}
 }</code></pre></div><div style="flex-grow: 1; max-width: 800px; position: sticky; top: 0; " ><div style="text-align: center; margin: 10px; " ><span style="background: yellow; padding: 4px 6px; border-radius: 4px; " >Example: Hyptiotes x React Rendered</span></div><div id="root" style="margin: 12px; padding: 40px 20px; border: 1px solid black; border-radius: 10px; background: white; " ></div><script src="./react.bundle.js" ></script></div></div></body></html>

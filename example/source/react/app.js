@@ -1,5 +1,5 @@
-const React = require("react");
-const { useState, useEffect } = React;
+// Don't need to require React since it's exposed in function call
+// const React = require("react");
 const TodoStore = require("../TodoStore");
 
 module.exports = [
@@ -10,7 +10,7 @@ module.exports = [
 	[AddTodo],
 ];
 
-function TodoList() {
+function TodoList(_, { useEffect, useState }) {
 	const [list, setList] = useState(TodoStore.get());
 	useEffect(() => TodoStore.subscribe((v) => setList(v)));
 
@@ -22,7 +22,7 @@ function TodoList() {
 	];
 }
 
-function AddTodo() {
+function AddTodo(_, { useState }) {
 	const [val, setVal] = useState("");
 	return [
 		":div",
