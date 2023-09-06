@@ -3,7 +3,7 @@ const TodoStore = {
 	subscriptions: [],
 	get: () => TodoStore.data,
 	add: (todo) => (TodoStore.data.push(todo), TodoStore.emit()),
-	emit: () => TodoStore.subscriptions.forEach((cb) => cb(TodoStore.data)),
+	emit: () => TodoStore.subscriptions.forEach((cb) => cb([...TodoStore.data])),
 	subscribe: (fn) => {
 		TodoStore.subscriptions.push(fn);
 		return () => TodoStore.subscriptions.splice(TodoStore.subscriptions.indexOf(fn), 1);

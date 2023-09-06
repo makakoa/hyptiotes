@@ -1,310 +1,124 @@
-<!DOCTYPE html><html ><head ><title >Hyptiotes Directory (Markup) Example</title><style > body{font-family:system-ui;} #main-content{display:flex;flex-direction:column;align-items:center;} pre{tab-size:2;white-space:pre-wrap;padding:12px;background:#222;color:white;box-shadow:5px 5px 5px black;}</style><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css" ></link></head><body ><h1 >Hyptiotes: Directory (Markup)</h1><div style="margin: 10px 0; " ><a href="/index.html" style="margin: 4px 6px; " >Directory (Markup)</a><a href="/hook.html" style="margin: 4px 6px; " >Hook (DOM Based)</a><a href="/observable.html" style="margin: 4px 6px; " >Observable (DOM Based)</a><a href="/react.html" style="margin: 4px 6px; " >React</a><div >Wrapper, CSS, and sources rendered to markup</div></div><div style="display: flex; align-items: flex-start; " ><div style="flex-grow: 1; " >Sources<pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >fromTemplate.js</div><code ><span class="hljs-comment">// Load JS syntax highlighter</span>
-<span class="hljs-keyword">const</span> hljs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;highlight.js/lib/core&quot;</span>);
-hljs.<span class="hljs-title function_">registerLanguage</span>(
-	<span class="hljs-string">&quot;javascript&quot;</span>,
-	<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;highlight.js/lib/languages/javascript&quot;</span>)
-);
-
-<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-keyword">function</span> <span class="hljs-title function_">fromTemplate</span>(<span class="hljs-params">
-	{ name, id, bundled, content, sources },
-	EXAMPLES
-</span>) {
-	<span class="hljs-keyword">return</span> [
-		<span class="hljs-string">&quot;:html&quot;</span>,
-		[
-			<span class="hljs-string">&quot;:head&quot;</span>,
-			[<span class="hljs-string">&quot;:title&quot;</span>, <span class="hljs-string">&quot;Hyptiotes &quot;</span> + name + <span class="hljs-string">&quot; Example&quot;</span>],
-			[
-				<span class="hljs-string">&quot;:style&quot;</span>,
-				hyptiotes.<span class="hljs-property">PLUGINS</span>.<span class="hljs-title function_">styleObjectToCSS</span>({
-					<span class="hljs-attr">body</span>: {
-						<span class="hljs-attr">fontFamily</span>: <span class="hljs-string">&quot;system-ui&quot;</span>,
-					},
-					<span class="hljs-string">&quot;#main-content&quot;</span>: {
-						<span class="hljs-attr">display</span>: <span class="hljs-string">&quot;flex&quot;</span>,
-						<span class="hljs-attr">flexDirection</span>: <span class="hljs-string">&quot;column&quot;</span>,
-						<span class="hljs-attr">alignItems</span>: <span class="hljs-string">&quot;center&quot;</span>,
-					},
-					<span class="hljs-attr">pre</span>: {
-						<span class="hljs-attr">tabSize</span>: <span class="hljs-number">2</span>,
-						<span class="hljs-attr">whiteSpace</span>: <span class="hljs-string">&quot;pre-wrap&quot;</span>,
-						<span class="hljs-attr">padding</span>: <span class="hljs-string">&quot;12px&quot;</span>,
-						<span class="hljs-attr">background</span>: <span class="hljs-string">&quot;#222&quot;</span>,
-						<span class="hljs-attr">color</span>: <span class="hljs-string">&quot;white&quot;</span>,
-						<span class="hljs-attr">boxShadow</span>: <span class="hljs-string">&quot;5px 5px 5px black&quot;</span>,
-					},
-				}),
-			],
-			[
-				<span class="hljs-string">&quot;:link&quot;</span>,
-				{
-					<span class="hljs-attr">rel</span>: <span class="hljs-string">&quot;stylesheet&quot;</span>,
-					<span class="hljs-attr">href</span>: <span class="hljs-string">&quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css&quot;</span>,
-				},
-			],
-		],
-		[
-			<span class="hljs-string">&quot;:body&quot;</span>,
-			[<span class="hljs-string">&quot;:h1&quot;</span>, <span class="hljs-string">&quot;Hyptiotes: &quot;</span>, name],
-			[
-				<span class="hljs-string">&quot;:div&quot;</span>,
-				{ <span class="hljs-attr">style</span>: { <span class="hljs-attr">margin</span>: <span class="hljs-string">&quot;10px 0&quot;</span> } },
-				<span class="hljs-variable constant_">EXAMPLES</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">{ name, id }</span>) =&gt;</span> {
-					<span class="hljs-keyword">return</span> [
-						<span class="hljs-string">&quot;:a&quot;</span>,
-						{ <span class="hljs-attr">href</span>: <span class="hljs-string">&quot;/&quot;</span> + id + <span class="hljs-string">&quot;.html&quot;</span>, <span class="hljs-attr">style</span>: { <span class="hljs-attr">margin</span>: <span class="hljs-string">&quot;4px 6px&quot;</span> } },
-						name,
-					];
-				}),
-				[<span class="hljs-string">&quot;:div&quot;</span>, content],
-			],
-			[
-				<span class="hljs-string">&quot;:div&quot;</span>,
-				{ <span class="hljs-attr">style</span>: { <span class="hljs-attr">display</span>: <span class="hljs-string">&quot;flex&quot;</span>, <span class="hljs-attr">alignItems</span>: <span class="hljs-string">&quot;flex-start&quot;</span> } },
-				[
-					<span class="hljs-string">&quot;:div&quot;</span>,
-					{ <span class="hljs-attr">style</span>: { <span class="hljs-attr">flexGrow</span>: <span class="hljs-string">&quot;1&quot;</span> } },
-					<span class="hljs-string">&quot;Sources&quot;</span>,
-					sources.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">{ name, val }</span>) =&gt;</span> {
-						<span class="hljs-keyword">return</span> <span class="hljs-title class_">CodeBlock</span>(name, val);
-					}),
-				],
-				bundled
-					? [
-							<span class="hljs-string">&quot;:div&quot;</span>,
-							{ <span class="hljs-attr">style</span>: { <span class="hljs-attr">flexGrow</span>: <span class="hljs-number">1</span>} },
-							name + <span class="hljs-string">&quot; Example App&quot;</span>,
-							[
-								<span class="hljs-string">&quot;:div&quot;</span>,
-								{
-									<span class="hljs-attr">id</span>: <span class="hljs-string">&quot;root&quot;</span>,
-									<span class="hljs-attr">style</span>: {
-                    <span class="hljs-attr">margin</span>: <span class="hljs-string">&quot;12px&quot;</span>,
-										<span class="hljs-attr">padding</span>: <span class="hljs-string">&quot;40px 20px&quot;</span>,
-										<span class="hljs-attr">border</span>: <span class="hljs-string">&quot;1px solid black&quot;</span>,
-										<span class="hljs-attr">borderRadius</span>: <span class="hljs-string">&quot;10px&quot;</span>,
-									},
-								},
-							],
-							[<span class="hljs-string">&quot;:script&quot;</span>, { <span class="hljs-attr">src</span>: <span class="hljs-string">&quot;./&quot;</span> + id + <span class="hljs-string">&quot;.bundle.js&quot;</span> }],
-					  ]
-					: <span class="hljs-literal">null</span>,
-			],
-		],
-	];
-};
-
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">CodeBlock</span>(<span class="hljs-params">name, code</span>) {
-	<span class="hljs-keyword">return</span> [
-		<span class="hljs-string">&quot;:pre&quot;</span>,
-		{ <span class="hljs-attr">class</span>: <span class="hljs-string">&quot;code&quot;</span>, <span class="hljs-attr">style</span>: { <span class="hljs-attr">position</span>: <span class="hljs-string">&quot;relative&quot;</span>, <span class="hljs-attr">margin</span>: <span class="hljs-string">&quot;12px&quot;</span> } },
-		[
-			<span class="hljs-string">&quot;:div&quot;</span>,
-			{
-				<span class="hljs-attr">style</span>: {
-					<span class="hljs-attr">position</span>: <span class="hljs-string">&quot;absolute&quot;</span>,
-					<span class="hljs-attr">top</span>: <span class="hljs-number">0</span>,
-					<span class="hljs-attr">right</span>: <span class="hljs-number">0</span>,
-					<span class="hljs-attr">padding</span>: <span class="hljs-string">&quot;8px&quot;</span>,
-					<span class="hljs-attr">background</span>: <span class="hljs-string">&quot;black&quot;</span>,
-					<span class="hljs-attr">fontSize</span>: <span class="hljs-string">&quot;14px&quot;</span>,
-				},
-			},
-			name,
-		],
-		[<span class="hljs-string">&quot;:code&quot;</span>, hljs.<span class="hljs-title function_">highlight</span>(code, { <span class="hljs-attr">language</span>: <span class="hljs-string">&quot;javascript&quot;</span> }).<span class="hljs-property">value</span>],
-	];
-}
-</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >Configuration for markup</div><code >{
-  <span class="hljs-string">&quot;elementInitializer&quot;</span>: <span class="hljs-function">(<span class="hljs-params">tag</span>) =&gt;</span> ({ tag, <span class="hljs-attr">attributes</span>: {}, <span class="hljs-attr">children</span>: [] }),
-  <span class="hljs-string">&quot;itemHandlers&quot;</span>: [
-    {
-      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item === <span class="hljs-literal">null</span> || item === <span class="hljs-literal">undefined</span>,
-      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">() =&gt;</span> {}
-    },
-    {
-      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> item === <span class="hljs-string">&quot;function&quot;</span>,
-      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ item, parent, index, hyptiotes }</span>) =&gt;</span> {
-		hyptiotes.<span class="hljs-title function_">mapItem</span>(<span class="hljs-title function_">item</span>({ parent, hyptiotes }), parent, index);
-	}
-    },
-    {
-      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> item === <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ item, parent }</span>) =&gt;</span> {
-    parent.<span class="hljs-property">children</span>.<span class="hljs-title function_">push</span>(item);
-  }
-    },
-    {
-      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span>
-    <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(item) &amp;&amp; <span class="hljs-keyword">typeof</span> item[<span class="hljs-number">0</span>] === <span class="hljs-string">&quot;string&quot;</span> &amp;&amp; item[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] === <span class="hljs-string">&quot;:&quot;</span>,
-      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ item, parent, hyptiotes }</span>) =&gt;</span> {
-    <span class="hljs-keyword">const</span> nested = hyptiotes.<span class="hljs-title function_">castWeb</span>(item);
-    <span class="hljs-keyword">if</span> (nested) parent.<span class="hljs-property">children</span>.<span class="hljs-title function_">push</span>(nested);
-  }
-    },
-    {
-      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span>
-    <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(item) &amp;&amp;
-    (<span class="hljs-keyword">typeof</span> item[<span class="hljs-number">0</span>] !== <span class="hljs-string">&quot;string&quot;</span> || item[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] !== <span class="hljs-string">&quot;:&quot;</span>),
-      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ item, parent, hyptiotes }</span>) =&gt;</span> {
-    item.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">i</span>) =&gt;</span> {
-      parent.<span class="hljs-property">children</span>.<span class="hljs-title function_">push</span>(hyptiotes.<span class="hljs-title function_">mapItem</span>(i, parent, hyptiotes));
-    });
-  }
-    }
-  ],
-  <span class="hljs-string">&quot;attributeHandlers&quot;</span>: [
-    {
-      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> key === <span class="hljs-string">&quot;style&quot;</span>,
-      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ value, parent }</span>) =&gt;</span> {
-    parent.<span class="hljs-property">attributes</span>.<span class="hljs-property">style</span> = <span class="hljs-title function_">stringifyStyleObject</span>(value);
-  }
-    },
-    {
-      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">_, value</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&quot;function&quot;</span>,
-      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ key, value, parent }</span>) =&gt;</span> {
-    <span class="hljs-keyword">let</span> handlerName = <span class="hljs-string">&quot;_hyptiotes_handler_&quot;</span> + functionLUID++;
-    <span class="hljs-variable language_">window</span>.<span class="hljs-property">handlerName</span> = value;
-    parent.<span class="hljs-property">attributes</span>[key] = handlerName + <span class="hljs-string">&quot;()&quot;</span>;
-  }
-    },
-    {
-      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-literal">true</span>,
-      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ key, value, parent }</span>) =&gt;</span> {
-    parent.<span class="hljs-property">attributes</span>[key] = value;
-  }
-    }
-  ],
-  <span class="hljs-string">&quot;elementFinalizer&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ tag, attributes, children }</span>) =&gt;</span> {
-	<span class="hljs-keyword">const</span> elementName = tag.<span class="hljs-title function_">slice</span>(<span class="hljs-number">1</span>); <span class="hljs-comment">// take off &#x27;:&#x27;</span>
-	<span class="hljs-keyword">return</span> <span class="hljs-string">`&lt;<span class="hljs-subst">${elementName}</span> <span class="hljs-subst">${stringifyAttributes(attributes)}</span>&gt;<span class="hljs-subst">${children.join(
-		<span class="hljs-string">&quot;&quot;</span>
-	)}</span>&lt;/<span class="hljs-subst">${elementName}</span>&gt;`</span>;
-}
-}</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >index.js</div><code ><span class="hljs-comment">// path hack to exposed aliased ./hyptiotes.js</span>
-process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_PATH</span> = __dirname;
-<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;module&quot;</span>).<span class="hljs-property">Module</span>.<span class="hljs-title function_">_initPaths</span>();
-<span class="hljs-comment">// end path hack</span>
-
-<span class="hljs-keyword">const</span> hyptiotes = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;hyptiotes&quot;</span>);
-<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>);
-<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);
+<!DOCTYPE html><html ><head ><title >Hyptiotes Basics Example</title><style > body{background:#009688;font-family:system-ui;} #main-content{display:flex;flex-direction:column;align-items:center;} pre{tab-size:2;white-space:pre-wrap;padding:12px;background:#222;border-radius:4px;color:white;box-shadow:5px 5px 5px black;}</style><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css" ></link></head><body ><div style="display: flex; margin: 10px 0; " ><a href="/index.html" style="background: #fff; color: #444; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Basics</a><a href="/advanced.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Configuration: Understanding Hyptiotes</a><a href="/hook.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Hooks (DOM API)</a><a href="/observable.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Observable (DOM API)</a><a href="/react.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Hyptiotes x React</a><a href="/markup.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Demo Wrapper (Markup)</a></div><div style="display: flex; align-items: flex-start; " ><div style="flex-grow: 1; " ><div style="text-align: center; margin: 10px; " ><span style="background: yellow; padding: 4px 6px; border-radius: 4px; " >Sources</span></div><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >index.js</div><code ><span class="hljs-keyword">const</span> hyptiotes = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;hyptiotes&quot;</span>);
 
 <span class="hljs-keyword">const</span> configuration = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./configuration&quot;</span>);
-<span class="hljs-keyword">const</span> fromTemplate = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./fromTemplate&quot;</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">App</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./app&quot;</span>);
 
 hyptiotes.<span class="hljs-title function_">setElementInitializer</span>(configuration.<span class="hljs-property">elementInitializer</span>);
 hyptiotes.<span class="hljs-title function_">setItemHandlers</span>(configuration.<span class="hljs-property">itemHandlers</span>);
 hyptiotes.<span class="hljs-title function_">setAttributeHandlers</span>(configuration.<span class="hljs-property">attributeHandlers</span>);
 hyptiotes.<span class="hljs-title function_">setElementFinalizer</span>(configuration.<span class="hljs-property">elementFinalizer</span>);
 
-<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">EXAMPLES</span> = [
-	{
-		<span class="hljs-attr">id</span>: <span class="hljs-string">&quot;index&quot;</span>,
-		<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Directory (Markup)&quot;</span>,
-		<span class="hljs-attr">content</span>: <span class="hljs-string">&quot;Wrapper, CSS, and sources rendered to markup&quot;</span>,
-		<span class="hljs-attr">sources</span>: [
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;fromTemplate.js&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">readFile</span>(<span class="hljs-string">&quot;./fromTemplate.js&quot;</span>),
-			},
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Configuration for markup&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">prettyPrint</span>(configuration),
-			},
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;index.js&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">readFile</span>(<span class="hljs-string">&quot;./index.js&quot;</span>),
-			},
+<span class="hljs-keyword">const</span> domTree = hyptiotes.<span class="hljs-title function_">castWeb</span>(<span class="hljs-title class_">App</span>);
+
+<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;root&quot;</span>).<span class="hljs-title function_">appendChild</span>(domTree);
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >app.js</div><code ><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
+	<span class="hljs-string">&quot;:div&quot;</span>,
+	{ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;main-content&quot;</span>, <span class="hljs-attr">style</span>: {<span class="hljs-attr">alignItems</span>: <span class="hljs-string">&quot;flex-start&quot;</span>} },
+	[<span class="hljs-string">&quot;:h1&quot;</span>, <span class="hljs-string">&quot;Hyptiotes Basics&quot;</span>],
+
+	[<span class="hljs-string">&#x27;:span&#x27;</span>, <span class="hljs-string">&quot;Follow the sources along with each section for a guided intro to Hyptiotes patterns&quot;</span>],
+
+	<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./arrayTrees&quot;</span>),
+	<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./richNodes&quot;</span>),
+	<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./treeGeneration&quot;</span>),
+];
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >arrayTrees.js</div><code ><span class="hljs-comment">// A tree represented in arrays</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
+	<span class="hljs-string">&quot;:div&quot;</span>,
+	[<span class="hljs-string">&quot;:h3&quot;</span>, <span class="hljs-string">&quot;Array Based Trees &quot;</span>],
+	[
+		<span class="hljs-string">&quot;:span&quot;</span>,
+		<span class="hljs-string">&quot;Hyptiotes leverages the most basic form of a tree: nested arrays. &quot;</span>,
+		<span class="hljs-string">&quot;With Hyptiotes, defining the structure of a ui tree is as simple as creating an array. &quot;</span>,
+
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+
+		<span class="hljs-string">&quot;See &quot;</span>,
+		[<span class="hljs-string">&quot;:code&quot;</span>, <span class="hljs-string">&quot;arrayTrees.js&quot;</span>],
+		<span class="hljs-string">&quot; under sources to see how this ui hierarchy was represented in arrays.&quot;</span>,
+	],
+];
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >richNodes.js</div><code ><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
+	<span class="hljs-string">&quot;:div&quot;</span>,
+	[<span class="hljs-string">&quot;:h3&quot;</span>, <span class="hljs-string">&quot;Rich Nodes: Tags + Attributes + Children&quot;</span>],
+
+	[
+		<span class="hljs-comment">// Tag</span>
+		<span class="hljs-string">&quot;:span&quot;</span>,
+
+		<span class="hljs-comment">// Children</span>
+		<span class="hljs-string">&quot;In typical UI trees, in addition to &quot;</span>,
+		[
+			<span class="hljs-string">&quot;:span&quot;</span>,
+			<span class="hljs-comment">// Attributes</span>
+			{ <span class="hljs-attr">style</span>: { <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">&quot;bold&quot;</span> } },
+			<span class="hljs-string">&quot;children&quot;</span>,
 		],
-	},
-	{
-		<span class="hljs-attr">id</span>: <span class="hljs-string">&quot;hook&quot;</span>,
-		<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Hook (DOM Based)&quot;</span>,
-		<span class="hljs-attr">bundled</span>: <span class="hljs-literal">true</span>,
-		<span class="hljs-attr">content</span>:
-			<span class="hljs-string">&quot;Rerender hooks exposed through functional interface to allow dynamic content&quot;</span>,
-		<span class="hljs-attr">sources</span>: [
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;app.js&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">readFile</span>(<span class="hljs-string">&quot;../hook/app.js&quot;</span>),
-			},
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Configuration for hook functions&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">prettyPrint</span>(<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../hook/configuration&quot;</span>)),
-			},
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;index.js&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">readFile</span>(<span class="hljs-string">&quot;../hook/index.js&quot;</span>),
-			},
+		<span class="hljs-string">&quot;, nodes also have &quot;</span>,
+		[<span class="hljs-string">&quot;:span&quot;</span>, { <span class="hljs-attr">style</span>: { <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">&quot;bold&quot;</span> } }, <span class="hljs-string">&quot;tags&quot;</span>],
+		<span class="hljs-string">&quot; and &quot;</span>,
+		[<span class="hljs-string">&quot;:span&quot;</span>, { <span class="hljs-attr">style</span>: { <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">&quot;bold&quot;</span> } }, <span class="hljs-string">&quot;attributes&quot;</span>],
+		<span class="hljs-string">&quot;. &quot;</span>,
+
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+
+		<span class="hljs-string">&quot;In the basic hyptiotes convention, tags are always &quot;</span>,
+		[<span class="hljs-string">&quot;:span&quot;</span>, { <span class="hljs-attr">style</span>: { <span class="hljs-attr">textDecoration</span>: <span class="hljs-string">&quot;underline&quot;</span> } }, <span class="hljs-string">&quot;the first item&quot;</span>],
+		<span class="hljs-string">&quot; in an array and attributes are &quot;</span>,
+		[<span class="hljs-string">&quot;:span&quot;</span>, { <span class="hljs-attr">style</span>: { <span class="hljs-attr">fontStyle</span>: <span class="hljs-string">&quot;italic&quot;</span> } }, <span class="hljs-string">&quot;plain objects&quot;</span>],
+		<span class="hljs-string">&quot; within the tree. &quot;</span>,
+
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+
+		[
+			<span class="hljs-string">&quot;:i&quot;</span>,
+			<span class="hljs-string">&#x27;Note: the default convention for hyptiotes is to prefix tag names with &quot;:&quot;. &#x27;</span>,
+			<span class="hljs-string">&quot;This is just to improve the readability of array trees and can be configured. &quot;</span>,
 		],
-	},
-	{
-		<span class="hljs-attr">id</span>: <span class="hljs-string">&quot;observable&quot;</span>,
-		<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Observable (DOM Based)&quot;</span>,
-		<span class="hljs-attr">bundled</span>: <span class="hljs-literal">true</span>,
-		<span class="hljs-attr">content</span>: <span class="hljs-string">&quot;Basic tree which maps observable subscriptions to dom mutations&quot;</span>,
-		<span class="hljs-attr">sources</span>: [
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;app.js&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">readFile</span>(<span class="hljs-string">&quot;../observable/app.js&quot;</span>),
-			},
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Configuration for dom observables&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">prettyPrint</span>(<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../observable/configuration&quot;</span>)),
-			},
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;index.js&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">readFile</span>(<span class="hljs-string">&quot;../observable/index.js&quot;</span>),
-			},
-		],
-	},
-	{
-		<span class="hljs-attr">id</span>: <span class="hljs-string">&quot;react&quot;</span>,
-		<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;React&quot;</span>,
-		<span class="hljs-attr">bundled</span>: <span class="hljs-literal">true</span>,
-		<span class="hljs-attr">content</span>: <span class="hljs-string">&quot;Mapping a Hyptiotes tree to a React tree&quot;</span>,
-		<span class="hljs-attr">sources</span>: [
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;app.js&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">readFile</span>(<span class="hljs-string">&quot;../react/app.js&quot;</span>),
-			},
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Configuration for React trees&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">prettyPrint</span>(<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../react/configuration&quot;</span>)),
-			},
-			{
-				<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;index.js&quot;</span>,
-				<span class="hljs-attr">val</span>: <span class="hljs-title function_">readFile</span>(<span class="hljs-string">&quot;../react/index.js&quot;</span>),
-			},
-		],
-	},
+	],
+];
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >treeGeneration.js</div><code ><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">STEPS</span> = [
+	<span class="hljs-string">&quot;Initialize Element&quot;</span>,
+	<span class="hljs-string">&quot;Item Mapping&quot;</span>,
+	<span class="hljs-string">&quot;Attribute Mapping&quot;</span>,
+	<span class="hljs-string">&quot;Finalize Element&quot;</span>,
 ];
 
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">prettyPrint</span>(<span class="hljs-params">obj</span>) {
-	<span class="hljs-keyword">return</span> <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(
-		obj,
-		<span class="hljs-function">(<span class="hljs-params">k, v</span>) =&gt;</span> (<span class="hljs-keyword">typeof</span> v === <span class="hljs-string">&quot;function&quot;</span> ? <span class="hljs-string">&quot;__f&quot;</span> + v.<span class="hljs-title function_">toString</span>() + <span class="hljs-string">&quot;f__&quot;</span> : v), <span class="hljs-comment">// mark fn string ends</span>
-		<span class="hljs-number">2</span>
-	)
-		.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/(&quot;__f|f__&quot;)/g</span>, <span class="hljs-string">&quot;&quot;</span>) <span class="hljs-comment">// remove quotations around functions</span>
-		.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/\\&quot;/g</span>, <span class="hljs-string">&#x27;&quot;&#x27;</span>) <span class="hljs-comment">// remove quotation escapes</span>
-		.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/\\n/g</span>, <span class="hljs-string">&quot;\n&quot;</span>) <span class="hljs-comment">// fix newlines</span>
-		.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/\\t/g</span>, <span class="hljs-string">&quot;\t&quot;</span>); <span class="hljs-comment">// fix tabs</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
+	<span class="hljs-string">&quot;:div&quot;</span>,
+	[<span class="hljs-string">&quot;:h3&quot;</span>, <span class="hljs-string">&quot;Tree Generation: Node Mapping&quot;</span>],
+
+	<span class="hljs-string">&quot;Hyptiotes facilitates tree generation as a 4 step array to node reduction for each &#x27;element&#x27;: &quot;</span>,
+
+  <span class="hljs-comment">// Variables and functional mapping</span>
+	[<span class="hljs-string">&quot;:ol&quot;</span>, <span class="hljs-variable constant_">STEPS</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">step</span>) =&gt;</span> [<span class="hljs-string">&quot;:li&quot;</span>, step])],
+
+	<span class="hljs-string">&quot;Each step provides an open plugin architecture which allows essentially limitless capabilities. &quot;</span>,
+
+  <span class="hljs-comment">// Inline function call</span>
+	<span class="hljs-title class_">Bonus</span>(),
+
+	[<span class="hljs-string">&quot;:h3&quot;</span>, <span class="hljs-string">&#x27;&quot;Build your own framework&quot;&#x27;</span>],
+	<span class="hljs-string">&quot;By leveraging configuration, hyptiotes makes it easy to essentially build or plug in your own framework. &quot;</span>,
+	<span class="hljs-string">&quot;Check out the other examples to see different example configurations for different app building paradigms like &quot;</span>,
+	[
+		<span class="hljs-string">&quot;:ul&quot;</span>,
+		[
+			<span class="hljs-string">&quot;generating markup&quot;</span>,
+			<span class="hljs-string">&quot;creating and manipulating DOM via the DOM API&quot;</span>,
+			<span class="hljs-string">&quot;creating a React tree&quot;</span>,
+		].<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">paradigm</span>) =&gt;</span> [<span class="hljs-string">&quot;:li&quot;</span>, paradigm]),
+	],
+  <span class="hljs-string">&quot;If you want to know more about what Hyptiotes can do, check out the README&quot;</span>
+];
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Bonus</span>(<span class="hljs-params"></span>) {
+	<span class="hljs-keyword">return</span> [
+		<span class="hljs-string">&quot;:div&quot;</span>,
+		<span class="hljs-string">&quot;And since you&#x27;re just dealing with JS, you can use any JS functionality available like variables, functions, or modules. &quot;</span>,
+	];
 }
-
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">readFile</span>(<span class="hljs-params">f</span>) {
-	<span class="hljs-keyword">return</span> fs.<span class="hljs-title function_">readFileSync</span>(path.<span class="hljs-title function_">join</span>(__dirname, f), <span class="hljs-string">&quot;utf-8&quot;</span>);
-}
-
-<span class="hljs-variable constant_">EXAMPLES</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">example</span>) =&gt;</span> {
-	<span class="hljs-keyword">const</span> markup =
-		<span class="hljs-string">&quot;&lt;!DOCTYPE html&gt;&quot;</span> + hyptiotes.<span class="hljs-title function_">castWeb</span>(<span class="hljs-title function_">fromTemplate</span>(example, <span class="hljs-variable constant_">EXAMPLES</span>));
-	fs.<span class="hljs-title function_">writeFileSync</span>(
-		path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&quot;../../public/&quot;</span> + example.<span class="hljs-property">id</span> + <span class="hljs-string">&quot;.html&quot;</span>),
-		markup
-	);
-});
-
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;HTML files genereated&quot;</span>);
-</code></pre></div></div></body></html>
+</code></pre></div><div style="flex-grow: 1; max-width: 800px; position: sticky; top: 0; " ><div style="text-align: center; margin: 10px; " ><span style="background: yellow; padding: 4px 6px; border-radius: 4px; " >Basics Rendered</span></div><div id="root" style="margin: 12px; padding: 40px 20px; border: 1px solid black; border-radius: 10px; background: white; " ></div><script src="./index.bundle.js" ></script></div></div></body></html>

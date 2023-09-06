@@ -18,6 +18,8 @@ const extended = isDev
 
 module.exports = {
 	entry: {
+		index: path.join(__dirname, "source/intro/index.js"),
+		advanced: path.join(__dirname, "source/advanced/index.js"),
 		hook: path.join(__dirname, "source/hook/index.js"),
 		observable: path.join(__dirname, "source/observable/index.js"),
 		react: path.join(__dirname, "source/react/index.js"),

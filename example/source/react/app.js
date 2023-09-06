@@ -13,6 +13,7 @@ module.exports = [
 function TodoList() {
 	const [list, setList] = useState(TodoStore.get());
 	useEffect(() => TodoStore.subscribe((v) => setList(v)));
+
 	return [
 		":ul",
 		...list.map((todo) => {

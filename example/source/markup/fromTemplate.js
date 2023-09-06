@@ -1,3 +1,4 @@
+const EXAMPLES = require("./Examples");
 // Load JS syntax highlighter
 const hljs = require("highlight.js/lib/core");
 hljs.registerLanguage(
@@ -5,10 +6,8 @@ hljs.registerLanguage(
 	require("highlight.js/lib/languages/javascript")
 );
 
-module.exports = function fromTemplate(
-	{ name, id, bundled, content, sources },
-	EXAMPLES
-) {
+// Example page markup defined as array tree
+module.exports = function fromTemplate({ name, id, bundled, sources }) {
 	return [
 		":html",
 		[
@@ -18,6 +17,7 @@ module.exports = function fromTemplate(
 				":style",
 				hyptiotes.PLUGINS.styleObjectToCSS({
 					body: {
+						background: "#009688",
 						fontFamily: "system-ui",
 					},
 					"#main-content": {
@@ -30,6 +30,7 @@ module.exports = function fromTemplate(
 						whiteSpace: "pre-wrap",
 						padding: "12px",
 						background: "#222",
+						borderRadius: "4px",
 						color: "white",
 						boxShadow: "5px 5px 5px black",
 					},
@@ -45,18 +46,33 @@ module.exports = function fromTemplate(
 		],
 		[
 			":body",
-			[":h1", "Hyptiotes: ", name],
 			[
 				":div",
-				{ style: { margin: "10px 0" } },
-				EXAMPLES.map(({ name, id }) => {
+				{ style: { display: "flex", margin: "10px 0" } },
+				EXAMPLES.map(({ name, id: exampleId }) => {
 					return [
 						":a",
-						{ href: "/" + id + ".html", style: { margin: "4px 6px" } },
+						{
+							href: "/" + exampleId + ".html",
+							style: {
+								...(id === exampleId
+									? {
+											background: "#fff",
+											color: "#444",
+									  }
+									: {
+											background: "#444",
+											color: "white",
+									  }),
+								borderRadius: "4px",
+								marginLeft: "15px",
+								padding: "8px 12px",
+								textDecoration: "none",
+							},
+						},
 						name,
 					];
 				}),
-				[":div", content],
 			],
 			[
 				":div",
@@ -64,7 +80,7 @@ module.exports = function fromTemplate(
 				[
 					":div",
 					{ style: { flexGrow: "1" } },
-					"Sources",
+					midText("Sources"),
 					sources.map(({ name, val }) => {
 						return CodeBlock(name, val);
 					}),
@@ -72,17 +88,25 @@ module.exports = function fromTemplate(
 				bundled
 					? [
 							":div",
-							{ style: { flexGrow: 1} },
-							name + " Example App",
+							{
+								style: {
+									flexGrow: 1,
+									maxWidth: "800px",
+									position: "sticky",
+									top: 0,
+								},
+							},
+							midText(name + " Rendered"),
 							[
 								":div",
 								{
 									id: "root",
 									style: {
-                    margin: "12px",
+										margin: "12px",
 										padding: "40px 20px",
 										border: "1px solid black",
 										borderRadius: "10px",
+										background: "white",
 									},
 								},
 							],
@@ -93,6 +117,24 @@ module.exports = function fromTemplate(
 		],
 	];
 };
+
+function midText(text) {
+	return [
+		":div",
+		{ style: { textAlign: "center", margin: "10px" } },
+		[
+			":span",
+			{
+				style: {
+					background: "yellow",
+					padding: "4px 6px",
+					borderRadius: "4px",
+				},
+			},
+			text,
+		],
+	];
+}
 
 function CodeBlock(name, code) {
 	return [
