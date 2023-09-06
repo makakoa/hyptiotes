@@ -1,9 +1,124 @@
-<!DOCTYPE html>
-<html>
-  <head>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script src="./scripts.bundle.js"></script>
-  </body>
-</html>
+<!DOCTYPE html><html ><head ><title >Hyptiotes Basics Example</title><style > body{background:#009688;font-family:system-ui;} #main-content{display:flex;flex-direction:column;align-items:center;} pre{tab-size:2;white-space:pre-wrap;padding:12px;background:#222;border-radius:4px;color:white;box-shadow:5px 5px 5px black;}</style><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css" ></link></head><body ><div style="display: flex; margin: 10px 0; " ><a href="/index.html" style="background: #fff; color: #444; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Basics</a><a href="/advanced.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Configuration: Understanding Hyptiotes</a><a href="/hook.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Hooks (DOM API)</a><a href="/observable.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Observable (DOM API)</a><a href="/react.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Hyptiotes x React</a><a href="/markup.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Demo Wrapper (Markup)</a></div><div style="display: flex; align-items: flex-start; " ><div style="flex-grow: 1; " ><div style="text-align: center; margin: 10px; " ><span style="background: yellow; padding: 4px 6px; border-radius: 4px; " >Sources</span></div><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >index.js</div><code ><span class="hljs-keyword">const</span> hyptiotes = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;hyptiotes&quot;</span>);
+
+<span class="hljs-keyword">const</span> configuration = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./configuration&quot;</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">App</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./app&quot;</span>);
+
+hyptiotes.<span class="hljs-title function_">setElementInitializer</span>(configuration.<span class="hljs-property">elementInitializer</span>);
+hyptiotes.<span class="hljs-title function_">setItemHandlers</span>(configuration.<span class="hljs-property">itemHandlers</span>);
+hyptiotes.<span class="hljs-title function_">setAttributeHandlers</span>(configuration.<span class="hljs-property">attributeHandlers</span>);
+hyptiotes.<span class="hljs-title function_">setElementFinalizer</span>(configuration.<span class="hljs-property">elementFinalizer</span>);
+
+<span class="hljs-keyword">const</span> domTree = hyptiotes.<span class="hljs-title function_">castWeb</span>(<span class="hljs-title class_">App</span>);
+
+<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;root&quot;</span>).<span class="hljs-title function_">appendChild</span>(domTree);
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >app.js</div><code ><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
+	<span class="hljs-string">&quot;:div&quot;</span>,
+	{ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;main-content&quot;</span>, <span class="hljs-attr">style</span>: {<span class="hljs-attr">alignItems</span>: <span class="hljs-string">&quot;flex-start&quot;</span>} },
+	[<span class="hljs-string">&quot;:h1&quot;</span>, <span class="hljs-string">&quot;Hyptiotes Basics&quot;</span>],
+
+	[<span class="hljs-string">&#x27;:span&#x27;</span>, <span class="hljs-string">&quot;Follow the sources along with each section for a guided intro to Hyptiotes patterns&quot;</span>],
+
+	<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./arrayTrees&quot;</span>),
+	<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./richNodes&quot;</span>),
+	<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./treeGeneration&quot;</span>),
+];
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >arrayTrees.js</div><code ><span class="hljs-comment">// A tree represented in arrays</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
+	<span class="hljs-string">&quot;:div&quot;</span>,
+	[<span class="hljs-string">&quot;:h3&quot;</span>, <span class="hljs-string">&quot;Array Based Trees &quot;</span>],
+	[
+		<span class="hljs-string">&quot;:span&quot;</span>,
+		<span class="hljs-string">&quot;Hyptiotes leverages the most basic form of a tree: nested arrays. &quot;</span>,
+		<span class="hljs-string">&quot;With Hyptiotes, defining the structure of a ui tree is as simple as creating an array. &quot;</span>,
+
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+
+		<span class="hljs-string">&quot;See &quot;</span>,
+		[<span class="hljs-string">&quot;:code&quot;</span>, <span class="hljs-string">&quot;arrayTrees.js&quot;</span>],
+		<span class="hljs-string">&quot; under sources to see how this ui hierarchy was represented in arrays.&quot;</span>,
+	],
+];
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >richNodes.js</div><code ><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
+	<span class="hljs-string">&quot;:div&quot;</span>,
+	[<span class="hljs-string">&quot;:h3&quot;</span>, <span class="hljs-string">&quot;Rich Nodes: Tags + Attributes + Children&quot;</span>],
+
+	[
+		<span class="hljs-comment">// Tag</span>
+		<span class="hljs-string">&quot;:span&quot;</span>,
+
+		<span class="hljs-comment">// Children</span>
+		<span class="hljs-string">&quot;In typical UI trees, in addition to &quot;</span>,
+		[
+			<span class="hljs-string">&quot;:span&quot;</span>,
+			<span class="hljs-comment">// Attributes</span>
+			{ <span class="hljs-attr">style</span>: { <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">&quot;bold&quot;</span> } },
+			<span class="hljs-string">&quot;children&quot;</span>,
+		],
+		<span class="hljs-string">&quot;, nodes also have &quot;</span>,
+		[<span class="hljs-string">&quot;:span&quot;</span>, { <span class="hljs-attr">style</span>: { <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">&quot;bold&quot;</span> } }, <span class="hljs-string">&quot;tags&quot;</span>],
+		<span class="hljs-string">&quot; and &quot;</span>,
+		[<span class="hljs-string">&quot;:span&quot;</span>, { <span class="hljs-attr">style</span>: { <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">&quot;bold&quot;</span> } }, <span class="hljs-string">&quot;attributes&quot;</span>],
+		<span class="hljs-string">&quot;. &quot;</span>,
+
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+
+		<span class="hljs-string">&quot;In the basic hyptiotes convention, tags are always &quot;</span>,
+		[<span class="hljs-string">&quot;:span&quot;</span>, { <span class="hljs-attr">style</span>: { <span class="hljs-attr">textDecoration</span>: <span class="hljs-string">&quot;underline&quot;</span> } }, <span class="hljs-string">&quot;the first item&quot;</span>],
+		<span class="hljs-string">&quot; in an array and attributes are &quot;</span>,
+		[<span class="hljs-string">&quot;:span&quot;</span>, { <span class="hljs-attr">style</span>: { <span class="hljs-attr">fontStyle</span>: <span class="hljs-string">&quot;italic&quot;</span> } }, <span class="hljs-string">&quot;plain objects&quot;</span>],
+		<span class="hljs-string">&quot; within the tree. &quot;</span>,
+
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+		[<span class="hljs-string">&quot;:br&quot;</span>],
+
+		[
+			<span class="hljs-string">&quot;:i&quot;</span>,
+			<span class="hljs-string">&#x27;Note: the default convention for hyptiotes is to prefix tag names with &quot;:&quot;. &#x27;</span>,
+			<span class="hljs-string">&quot;This is just to improve the readability of array trees and can be configured. &quot;</span>,
+		],
+	],
+];
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >treeGeneration.js</div><code ><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">STEPS</span> = [
+	<span class="hljs-string">&quot;Initialize Element&quot;</span>,
+	<span class="hljs-string">&quot;Item Mapping&quot;</span>,
+	<span class="hljs-string">&quot;Attribute Mapping&quot;</span>,
+	<span class="hljs-string">&quot;Finalize Element&quot;</span>,
+];
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
+	<span class="hljs-string">&quot;:div&quot;</span>,
+	[<span class="hljs-string">&quot;:h3&quot;</span>, <span class="hljs-string">&quot;Tree Generation: Node Mapping&quot;</span>],
+
+	<span class="hljs-string">&quot;Hyptiotes facilitates tree generation as a 4 step array to node reduction for each &#x27;element&#x27;: &quot;</span>,
+
+  <span class="hljs-comment">// Variables and functional mapping</span>
+	[<span class="hljs-string">&quot;:ol&quot;</span>, <span class="hljs-variable constant_">STEPS</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">step</span>) =&gt;</span> [<span class="hljs-string">&quot;:li&quot;</span>, step])],
+
+	<span class="hljs-string">&quot;Each step provides an open plugin architecture which allows essentially limitless capabilities. &quot;</span>,
+
+  <span class="hljs-comment">// Inline function call</span>
+	<span class="hljs-title class_">Bonus</span>(),
+
+	[<span class="hljs-string">&quot;:h3&quot;</span>, <span class="hljs-string">&#x27;&quot;Build your own framework&quot;&#x27;</span>],
+	<span class="hljs-string">&quot;By leveraging configuration, hyptiotes makes it easy to essentially build or plug in your own framework. &quot;</span>,
+	<span class="hljs-string">&quot;Check out the other examples to see different example configurations for different app building paradigms like &quot;</span>,
+	[
+		<span class="hljs-string">&quot;:ul&quot;</span>,
+		[
+			<span class="hljs-string">&quot;generating markup&quot;</span>,
+			<span class="hljs-string">&quot;creating and manipulating DOM via the DOM API&quot;</span>,
+			<span class="hljs-string">&quot;creating a React tree&quot;</span>,
+		].<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">paradigm</span>) =&gt;</span> [<span class="hljs-string">&quot;:li&quot;</span>, paradigm]),
+	],
+  <span class="hljs-string">&quot;If you want to know more about what Hyptiotes can do, check out the README&quot;</span>
+];
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Bonus</span>(<span class="hljs-params"></span>) {
+	<span class="hljs-keyword">return</span> [
+		<span class="hljs-string">&quot;:div&quot;</span>,
+		<span class="hljs-string">&quot;And since you&#x27;re just dealing with JS, you can use any JS functionality available like variables, functions, or modules. &quot;</span>,
+	];
+}
+</code></pre></div><div style="flex-grow: 1; max-width: 800px; position: sticky; top: 0; " ><div style="text-align: center; margin: 10px; " ><span style="background: yellow; padding: 4px 6px; border-radius: 4px; " >Basics Rendered</span></div><div id="root" style="margin: 12px; padding: 40px 20px; border: 1px solid black; border-radius: 10px; background: white; " ></div><script src="./index.bundle.js" ></script></div></div></body></html>

@@ -38,3 +38,10 @@ Framework Design Principles:
  - Don't add magic, enable magic. Keep as much logic above board as possible.
  - Web has quirks, don't hide them with more quirks. Keep it simple. Keep it vanilla.
  - This is a web framework, not an application framework. It should not be "smart" or stateful in itself.
+
+
+
+// "It then applies a series of rules to assemble or cast that tree to a target UI tree (eg. the DOM). ",
+// "How exactly Hyptiotes decides to generate (and possibly regenerate) the UI tree is completely up to the configurer ",
+// " and you can see across examples how different combinations of frameworks might take shape. ",
+// "However the essential patterns and structure of array based trees should remain fairly constant. ",
