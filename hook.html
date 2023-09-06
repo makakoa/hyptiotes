@@ -1,0 +1,191 @@
+<!DOCTYPE html><html ><head ><title >Hyptiotes Example: Hooks (DOM API) Example</title><style > body{background:#009688;font-family:system-ui;} #main-content{display:flex;flex-direction:column;align-items:center;} pre{tab-size:2;white-space:pre-wrap;padding:12px;background:#222;border-radius:4px;color:white;box-shadow:5px 5px 5px black;}</style><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css" ></link></head><body ><div style="display: flex; margin: 10px 0; " ><a href="/index.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Basics</a><a href="/advanced.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Configuration: Understanding Hyptiotes</a><a href="/hook.html" style="background: #fff; color: #444; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Hooks (DOM API)</a><a href="/observable.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Observable (DOM API)</a><a href="/react.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Hyptiotes x React</a><a href="/markup.html" style="background: #444; color: white; border-radius: 4px; margin-left: 15px; padding: 8px 12px; text-decoration: none; " >Example: Demo Wrapper (Markup)</a></div><div style="display: flex; align-items: flex-start; " ><div style="flex-grow: 1; " ><div style="text-align: center; margin: 10px; " ><span style="background: yellow; padding: 4px 6px; border-radius: 4px; " >Sources</span></div><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >index.js</div><code ><span class="hljs-keyword">const</span> hyptiotes = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;hyptiotes&quot;</span>);
+
+<span class="hljs-keyword">const</span> configuration = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./configuration&quot;</span>);
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">App</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./app&quot;</span>);
+
+hyptiotes.<span class="hljs-title function_">setElementInitializer</span>(configuration.<span class="hljs-property">elementInitializer</span>);
+hyptiotes.<span class="hljs-title function_">setItemHandlers</span>(configuration.<span class="hljs-property">itemHandlers</span>);
+hyptiotes.<span class="hljs-title function_">setAttributeHandlers</span>(configuration.<span class="hljs-property">attributeHandlers</span>);
+hyptiotes.<span class="hljs-title function_">setElementFinalizer</span>(configuration.<span class="hljs-property">elementFinalizer</span>);
+
+<span class="hljs-keyword">const</span> domTree = hyptiotes.<span class="hljs-title function_">castWeb</span>(<span class="hljs-title class_">App</span>);
+
+<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;root&quot;</span>).<span class="hljs-title function_">appendChild</span>(domTree);
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >configuration.js</div><code ><span class="hljs-keyword">const</span> hyptiotes = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;hyptiotes&quot;</span>);
+
+<span class="hljs-comment">// Hyptiotes base configuration with added function hook interface</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+	<span class="hljs-attr">elementInitializer</span>: hyptiotes.<span class="hljs-property">DEFAULT_ELEMENT_INITIALIZER</span>,
+	<span class="hljs-attr">itemHandlers</span>: [
+    hyptiotes.<span class="hljs-property">PLUGINS</span>.<span class="hljs-property">functionToHookInserts</span>,
+    ...hyptiotes.<span class="hljs-property">DEFAULT_ITEM_HANDLERS</span>,
+  ],
+	<span class="hljs-attr">attributeHandlers</span>: hyptiotes.<span class="hljs-property">DEFAULT_ATTRIBUTE_HANDLERS</span>,
+	<span class="hljs-attr">elementFinalizer</span>: hyptiotes.<span class="hljs-property">DEFAULT_ELEMENT_FINALIZER</span>,
+};
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >app.js</div><code ><span class="hljs-keyword">const</span> <span class="hljs-title class_">TodoStore</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../TodoStore&quot;</span>);
+
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = [
+	<span class="hljs-string">&quot;:div&quot;</span>,
+	{ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;main-content&quot;</span> },
+	[<span class="hljs-string">&quot;:h1&quot;</span>, <span class="hljs-string">&quot;Hyptiotes To-Do&quot;</span>],
+	<span class="hljs-title class_">TodoList</span>,
+	<span class="hljs-title class_">AddTodo</span>,
+];
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">TodoList</span>(<span class="hljs-params">{ recast, onCleanup }</span>) {
+	<span class="hljs-title function_">onCleanup</span>(<span class="hljs-title class_">TodoStore</span>.<span class="hljs-title function_">subscribe</span>(recast));
+	<span class="hljs-keyword">return</span> [
+		<span class="hljs-string">&quot;:ul&quot;</span>,
+		...<span class="hljs-title class_">TodoStore</span>.<span class="hljs-title function_">get</span>().<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">todo</span>) =&gt;</span> {
+			<span class="hljs-keyword">return</span> [<span class="hljs-string">&quot;:li&quot;</span>, todo];
+		}),
+	];
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">AddTodo</span>(<span class="hljs-params">{ recast }</span>) {
+	<span class="hljs-keyword">let</span> inputValue = <span class="hljs-string">&quot;&quot;</span>;
+	<span class="hljs-keyword">return</span> [
+		<span class="hljs-string">&quot;:div&quot;</span>,
+		[
+			<span class="hljs-string">&quot;:input&quot;</span>,
+			{
+				<span class="hljs-attr">onchange</span>: <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> {
+					inputValue = e.<span class="hljs-property">target</span>.<span class="hljs-property">value</span>;
+				},
+			},
+		],
+		[
+			<span class="hljs-string">&quot;:button&quot;</span>,
+			{
+				<span class="hljs-attr">onclick</span>: <span class="hljs-function">() =&gt;</span> {
+					<span class="hljs-title class_">TodoStore</span>.<span class="hljs-title function_">add</span>(inputValue);
+					<span class="hljs-title function_">recast</span>();
+				},
+			},
+			<span class="hljs-string">&quot;Add&quot;</span>,
+		],
+	];
+}</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >Hook Function Plugin (functionToHookInserts.js)</div><code ><span class="hljs-comment">// Interface to integrate dynamic function powered dom</span>
+<span class="hljs-comment">// Function items are called with functional hooks provided as params</span>
+<span class="hljs-comment">// These hooks (recast, onRefChange, onCleanup) handle dom access</span>
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
+	<span class="hljs-attr">test</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> item === <span class="hljs-string">&quot;function&quot;</span>,
+	<span class="hljs-attr">handler</span>: <span class="hljs-function">(<span class="hljs-params">{ item, parent, hyptiotes }</span>) =&gt;</span> {
+		<span class="hljs-title function_">contentGenerator</span>(item, parent, hyptiotes.<span class="hljs-property">castWeb</span>);
+	},
+};
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">contentGenerator</span>(<span class="hljs-params">generate, parent, cast</span>) {
+	<span class="hljs-keyword">let</span> onUpdate;
+	<span class="hljs-keyword">let</span> cleanupCbs = [];
+	<span class="hljs-keyword">let</span> refCb = <span class="hljs-literal">null</span>;
+
+	<span class="hljs-comment">// Define exposed hooks</span>
+	<span class="hljs-keyword">const</span> hooks = {
+		<span class="hljs-attr">recast</span>: <span class="hljs-function">(<span class="hljs-params">v</span>) =&gt;</span> <span class="hljs-title function_">onUpdate</span>(v),
+		<span class="hljs-attr">onRefChange</span>: <span class="hljs-function">(<span class="hljs-params">cb</span>) =&gt;</span> {
+			<span class="hljs-keyword">if</span> (refCb !== <span class="hljs-literal">null</span>) <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">&quot;Called onRefChange twice, only last is called&quot;</span>);
+			refCb = <span class="hljs-function">(<span class="hljs-params">element</span>) =&gt;</span> {
+				<span class="hljs-title function_">cb</span>(element);
+				refCb = <span class="hljs-literal">null</span>;
+			};
+		},
+		<span class="hljs-attr">onCleanup</span>: <span class="hljs-function">(<span class="hljs-params">fn</span>) =&gt;</span> cleanupCbs.<span class="hljs-title function_">push</span>(fn),
+	};
+
+	<span class="hljs-keyword">let</span> element = <span class="hljs-literal">null</span>;
+	<span class="hljs-keyword">function</span> <span class="hljs-title function_">renderer</span>(<span class="hljs-params"></span>) {
+		onUpdate = lockedUpdate;
+		cleanupCbs.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">fn</span>) =&gt;</span> <span class="hljs-title function_">fn</span>()); <span class="hljs-comment">// this should be a mutationobserver to catch removed in subtree</span>
+		cleanupCbs = [];
+
+		<span class="hljs-keyword">const</span> model = <span class="hljs-title function_">generate</span>(hooks);
+		<span class="hljs-keyword">const</span> updatedElement = <span class="hljs-title function_">cast</span>(model);
+
+		<span class="hljs-keyword">const</span> next = element &amp;&amp; element.<span class="hljs-property">nextSibling</span>;
+		<span class="hljs-keyword">if</span> (element) parent.<span class="hljs-title function_">removeChild</span>(element);
+		parent.<span class="hljs-title function_">insertBefore</span>(updatedElement, next);
+
+		<span class="hljs-keyword">if</span> (refCb) <span class="hljs-title function_">refCb</span>(updatedElement);
+
+		onUpdate = renderer;
+		element = updatedElement;
+	}
+
+	<span class="hljs-keyword">function</span> <span class="hljs-title function_">lockedUpdate</span>(<span class="hljs-params"></span>) {
+		<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Called update inside render (update is cyclical)&quot;</span>);
+	}
+
+	<span class="hljs-comment">// Initial render</span>
+	<span class="hljs-title function_">renderer</span>();
+}
+</code></pre><pre class="code" style="position: relative; margin: 12px; " ><div style="position: absolute; top: 0; right: 0; padding: 8px; background: black; font-size: 14px; " >Full Configuration</div><code >{
+  <span class="hljs-string">&quot;elementInitializer&quot;</span>: <span class="hljs-function">(<span class="hljs-params">tag</span>) =&gt;</span> <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(tag.<span class="hljs-title function_">slice</span>(<span class="hljs-number">1</span>)),
+  <span class="hljs-string">&quot;itemHandlers&quot;</span>: [
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> item === <span class="hljs-string">&quot;function&quot;</span>,
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ item, parent, hyptiotes }</span>) =&gt;</span> {
+		<span class="hljs-title function_">contentGenerator</span>(item, parent, hyptiotes.<span class="hljs-property">castWeb</span>);
+	}
+    },
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item === <span class="hljs-literal">null</span> || item === <span class="hljs-literal">undefined</span>,
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">() =&gt;</span> {}
+    },
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> item <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">HTMLElement</span>,
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{item, parent}</span>) =&gt;</span> parent.<span class="hljs-title function_">appendChild</span>(item)
+    },
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> <span class="hljs-keyword">typeof</span> item === <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ item, parent }</span>) =&gt;</span> {
+		<span class="hljs-keyword">const</span> textNode = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(item);
+		parent.<span class="hljs-title function_">appendChild</span>(textNode);
+	}
+    },
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(item) &amp;&amp; <span class="hljs-keyword">typeof</span> item[<span class="hljs-number">0</span>] === <span class="hljs-string">&quot;string&quot;</span> &amp;&amp; item[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] === <span class="hljs-string">&quot;:&quot;</span>,
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{item, parent, hyptiotes}</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> nested = hyptiotes.<span class="hljs-title function_">castWeb</span>(item);
+    <span class="hljs-keyword">if</span> (nested) parent.<span class="hljs-title function_">appendChild</span>(nested);
+  }
+    },
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">isArray</span>(item) &amp;&amp; (<span class="hljs-keyword">typeof</span> item[<span class="hljs-number">0</span>] !== <span class="hljs-string">&quot;string&quot;</span> || item[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] !== <span class="hljs-string">&quot;:&quot;</span>),
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{item, parent, hyptiotes}</span>) =&gt;</span> {
+    item.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">i</span> =&gt;</span> {
+      <span class="hljs-keyword">const</span> child = <span class="hljs-keyword">typeof</span> i === <span class="hljs-string">&quot;string&quot;</span> ? <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createTextNode</span>(item) : hyptiotes.<span class="hljs-title function_">castWeb</span>(i);
+      parent.<span class="hljs-title function_">appendChild</span>(child);
+    });
+  }
+    },
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> item === <span class="hljs-string">&quot;function&quot;</span>,
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{ item, parent, index, hyptiotes }</span>) =&gt;</span> {
+		hyptiotes.<span class="hljs-title function_">mapItem</span>(<span class="hljs-title function_">item</span>({ parent, hyptiotes }), parent, index);
+	}
+    }
+  ],
+  <span class="hljs-string">&quot;attributeHandlers&quot;</span>: [
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> key === <span class="hljs-string">&quot;style&quot;</span>,
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{value, parent}</span>) =&gt;</span> {
+    parent.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&#x27;style&#x27;</span>, <span class="hljs-title function_">stringifyStyleObject</span>(value));
+  }
+    },
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">(<span class="hljs-params">_, value</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">&quot;function&quot;</span>,
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{key, value, parent}</span>) =&gt;</span> {
+    parent[key] = value;
+  }
+    },
+    {
+      <span class="hljs-string">&quot;test&quot;</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-literal">true</span>,
+      <span class="hljs-string">&quot;handler&quot;</span>: <span class="hljs-function">(<span class="hljs-params">{key, value, parent}</span>) =&gt;</span> {
+    parent.<span class="hljs-title function_">setAttribute</span>(key, value);
+  }
+    }
+  ],
+  <span class="hljs-string">&quot;elementFinalizer&quot;</span>: <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> x
+}</code></pre></div><div style="flex-grow: 1; max-width: 800px; position: sticky; top: 0; " ><div style="text-align: center; margin: 10px; " ><span style="background: yellow; padding: 4px 6px; border-radius: 4px; " >Example: Hooks (DOM API) Rendered</span></div><div id="root" style="margin: 12px; padding: 40px 20px; border: 1px solid black; border-radius: 10px; background: white; " ></div><script src="./hook.bundle.js" ></script></div></div></body></html>
